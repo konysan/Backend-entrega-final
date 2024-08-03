@@ -1,0 +1,91 @@
+<h2>Perfil de: {{usuario.firstName}}</h2>
+<hr>
+<p>Nombre: <strong>{{usuario.firstName}} {{usuario.lastName}}</strong></p>
+<p>Correo electrónico: <strong>{{usuario.email}}</strong></p>
+<p>Rol: <strong>{{usuario.role}}</strong></p>
+<br>
+
+
+{{#if (eq usuario.role 'admin')}}
+<h2>Administración de Usuarios</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each users}}
+        <tr>
+            <td>{{this.first_name}} {{this.last_name}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.role}}</td>
+            <td>
+                <form action="/api/admin/{{this._id}}/role" method="POST">
+                    <select name="role">
+                        <option value="user" {{#if (eq this.role 'user')}}selected{{/if}}>Usuario</option>
+                        <option value="admin" {{#if (eq this.role 'admin')}}selected{{/if}}>Administrador</option>
+                        <option value="premium" {{#if (eq this.role 'premium')}}selected{{/if}}>Premium</option>
+                    </select>
+                    <button type="submit">Actualizar Rol</button>
+                </form>
+                <form id="delete-form-{{this._id}}" action="/api/admin/{{this._id}}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit">Eliminar</button>
+                </form>
+
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{/if}}
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const forms = document.querySelectorAll('form[id^="delete-form-"]');
+        
+        forms.forEach(form => {
+            form.addEventListener('submit', (event) => {
+                event.preventDefault(); // Previene el envío del formulario para registrar los datos
+                
+                const formData = new FormData(form);
+                const entries = Array.from(formData.entries());
+                const data = {};
+                
+                entries.forEach(entry => {
+                    data[entry[0]] = entry[1];
+                });
+                
+                console.log('Formulario enviado con los siguientes datos:', data);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-HTTP-Method-Override': 'DELETE'
+                    },
+                    body: new URLSearchParams(data),
+                    credentials: 'include' 
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Respuesta del servidor:', data);
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud DELETE:', error);
+                });
+            });
+        });
+    });
+</script>
+{{> menu}}

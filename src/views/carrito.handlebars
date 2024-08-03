@@ -1,0 +1,38 @@
+<body>
+    <header>
+        <h1>Bienvenido {{usuario.first_name}} {{usuario.last_name}}</h1>
+        <nav>
+            <a href="/">Inicio</a>
+            <a href="/productos">Productos</a>
+            <a href="/carrito">Carrito</a>
+            <a href="/perfil">Perfil</a>
+            <a href="/api/sessions/logout">Cerrar sesión</a>
+        </nav>
+    </header>
+
+    <main>
+        {{#if usuario}}
+        <h2>Carrito de {{usuario.first_name}} {{usuario.last_name}}</h2>
+        {{/if}}
+        <h3>Id carrito: {{carrito._id}}</h3>
+        <hr>
+
+        {{#if carrito.products.length}}
+        <ul>
+            {{#each carrito.products}}
+                <li>
+                    <strong>{{this.productId.title}}</strong> - 
+                    Cantidad: {{this.quantity}} - 
+                    Precio: {{this.productId.price}}
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>Carrito vacío.</p>
+    {{/if}}
+
+        <br>
+        <a href="/productos">Seguir comprando</a>
+        <a href="/carrito/checkout" class="btn-checkout">Finalizar compra</a>
+    </main>
+</body>

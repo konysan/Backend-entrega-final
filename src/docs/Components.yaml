@@ -1,0 +1,79 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado de mongo
+        first_name:
+          type: string
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: Apellido...    
+        email:
+          type: string
+          description: Correo electronico
+        password: 
+          type: string
+          description: contraseña de acceso  
+      example:
+        _id: ObjectId("60acc54545c8e82e0475f73a")
+        first_name: Diego
+        last_name: Polverelli
+        email: diegopolverelli@hotmail.com
+        password: "123"
+    Products:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado de mongo
+        description:
+          type: string
+          description: Descripcion del producto
+        code:
+          type: string
+          description: Codigo del producto    
+      example:
+        _id: ObjectId("60acc54545c8e82e0475f73a")
+        description: Harina
+        code: A0327v
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado por mongoDB
+        description: 
+          type: string
+          description: Descripcion del carrito.
+        code: 
+          type: string
+          description: Codigo del carrito
+        example: 
+          _id: ObjectId("60acc54545c8e82e0475f73a")
+          description: Carrito
+          code: A032154z
+  requestBodies:
+    createUser:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: Nombre de usurio
+        last_name:
+          type: string
+          description: Apellido
+        email:
+          type: string
+          description: Correo del usuario
+        password:
+          type: string
+          description: Contraseña del usuario
+      example:
+        first_name: Diego
+        last_name: Polverelli
+        email: diego@hotmail.com
+        password: coder123        

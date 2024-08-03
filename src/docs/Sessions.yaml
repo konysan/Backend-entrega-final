@@ -1,0 +1,84 @@
+
+#   /api/sessions/login/:
+#     post:
+#       summary: Realizar login de un usuario previmanete registrado
+#       tags:
+#         - Sessions
+#       requestBody:
+#         required: true
+#         content:
+#           application/json:
+#             schema:
+#               $ref: '#components/requestBodies/login'
+#       responses:
+#         "400":
+#           description: "Bad Request"
+#           content:
+#             aplication/json:
+#               schema:
+#                 oneOf:
+#                   - $ref: '#components/schemas/error1'
+#                   - $ref: '#components/schemas/error2'
+#         "200":
+#           description: "Devuelve un status de success y los datos del usuario que se ha logueado"
+#           content:
+#             application/json:
+#               schema:
+#                 $ref: '#components/schemas/login'
+# components:
+#   schemas:
+#     login:
+#       type: object
+#       properties:
+#         status:
+#           type: string
+#           description: Login correcto...!!!
+#         payload:
+#           type: object
+#           properties:
+#             _id:
+#               type: ObjectId
+#               description: id de Mongo Atlas
+#             nombre:
+#               type: string
+#               description: nombre usuario
+#             apellido:
+#               type: string
+#               description: apellido usuario
+#             email:
+#               type: string
+#               description: email usuario
+#             password:
+#               type: string
+#               description: contraseña
+#             fec_alta:
+#               type: string
+#               description: fecha alta usuario
+#       example:
+#         status: Login correcto...!!!
+#         payload: {_id: ObjectId("60acc54545c8e82e0475f73a"),first_name: Diego,last_name: Polverelli,email: diegopolverelli@hotmail.com, password: $2b$10$rz31bxi6bZ2xlKxNg7h5ruqX5E3eaTaossovb.m6YYG74tSypDetq, fec_alt: 2024-01-02T19:01:46.677Z}
+#     error1:
+#       type: object
+#       properties:
+#         error:
+#           type: string
+#           description: "Complete email y password"
+#     error2:
+#       type: object
+#       properties:
+#         error:
+#           type: string
+#           description: "Credenciales incorrectas"
+#   requestBodies:
+#     login:
+#       type: object
+#       properties:
+#         email:
+#           type: string
+#           description: email del usuario 
+#         password:
+#           type: string
+#           description: contraseña usuario
+#       example:
+#         email: diegopolverelli@hotmail.com
+#         password: "123"

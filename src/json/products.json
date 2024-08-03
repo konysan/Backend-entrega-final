@@ -1,0 +1,67 @@
+[
+  {
+    "title": "Harina",
+    "description": "0000 BlancaFlor",
+    "code": "abc123",
+    "price": 2000,
+    "status": true,
+    "stock": 55,
+    "category": "Harina",
+    "thumbnails": [
+      "harina.jpg"
+    ],
+    "id": 1
+  },
+  {
+    "title": "Fideos",
+    "description": "Marolio",
+    "code": "abc124",
+    "price": 100,
+    "status": true,
+    "stock": 40,
+    "category": "Fideos",
+    "thumbnails": [
+      "Fideos.jpg"
+    ],
+    "id": 2
+  },
+  {
+    "title": "Azucar",
+    "description": "Ledezma",
+    "code": "abc125",
+    "price": 450,
+    "status": true,
+    "stock": 25,
+    "category": "Azucar",
+    "thumbnails": [
+      "Azucar.jpg"
+    ],
+    "id": 3
+  },
+  {
+    "title": "Aceite",
+    "description": "Patito",
+    "code": "abc126",
+    "price": 800,
+    "status": true,
+    "stock": 17,
+    "category": "Aceite",
+    "thumbnails": [
+      "aceite.jpg"
+    ],
+    "id": 4
+  },
+  {
+    "title": "Vinagre",
+    "description": "cruz",
+    "code": "abc126",
+    "price": 600,
+    "status": true,
+    "stock": 37,
+    "category": "Vinagre",
+    "thumbnails": [
+      "vinagre.jpg"
+    ],
+    "id": 5
+  }
+]

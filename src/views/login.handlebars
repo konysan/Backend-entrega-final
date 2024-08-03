@@ -1,0 +1,20 @@
+<h2>Login usuarios:</h2>
+<hr>
+<form action="/api/sessions/login" method="post">
+
+    <div id="mensaje"></div>
+
+    <input type="email" name="email" placeholder="email" id="email">
+    <input type="password" name="password" placeholder="contraseña" id="password">
+    <br>
+    <input type="submit" value="Ingresar" id="submit">
+
+</form>
+<a href="/recoverpsw01.html">¿Olvidaste tu clave?</a> 
+<a href="api/sessions/github">Ingreso con github.</a>
+
+{{>menu}}
+
+
+<script src="/js/login.js"></script>
+

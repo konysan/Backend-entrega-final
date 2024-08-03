@@ -1,0 +1,43 @@
+paths:
+  /api/carts/:
+    get:
+      summary: Obtiene todos los carritos
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Los carritos fueron obtenidos OK desde la DB
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Lista de carritos"
+                  carritos:
+                    type: array
+                    items:
+                      $ref: '#components/schemas/Carts'
+        
+    post:
+      summary: Genera un nuevo carrito
+      tags:
+        - Carts
+      responses:
+        "201":
+          description: Carrito creado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Ejemplo de un carrito:"
+                  productos:
+                    type: array
+                    items:
+                      $ref: '#components/schemas/Carts'
+        "500":
+          description: Error interno del servidor
