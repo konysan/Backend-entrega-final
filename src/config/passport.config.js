@@ -1,7 +1,6 @@
 const passport = require('passport')
 const local = require('passport-local');
 const github = require('passport-github2')
-const { creaHash, validaPassword } = require('../utils/utils.js');
 const usersManager = require('../dao/usersMongoDAO.js')
 const usuariosService = require('../services/usersServices.js')
 const bcrypt = require ('bcrypt')
@@ -32,6 +31,8 @@ const initPassport = () => {
                     }
     
                     const hashedPassword = await bcrypt.hash(password, 10);
+
+                    let nuevoCarrito=await cartServices.createCartClean() 
     
                     const nuevoUsuario = await usuariosService.createUser({
                         first_name,
@@ -39,7 +40,8 @@ const initPassport = () => {
                         email,
                         age,
                         password: hashedPassword,
-                        role
+                        role,
+                        cart: nuevoCarrito._id 
                     });
     
                     return done(null, nuevoUsuario);

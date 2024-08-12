@@ -37,11 +37,16 @@ function generateUniqueCode() {
 
     return code;
 }
+
 function calculateTotalAmount(products) {
     let total = 0;
 
     for (const item of products) {
-        total += item.quantity * item.product.price;
+        if (item.productId && item.productId.price !== undefined) {
+            total += item.quantity * item.productId.price;
+        } else {
+            console.warn('Product or price is undefined for item:', item);
+        }
     }
 
     return total;

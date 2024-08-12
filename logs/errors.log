@@ -1,0 +1,2 @@
+[2024-08-10T18:11:52.837Z] error: Error inesperado en el servidor: E11000 duplicate key error collection: ecommerse.products index: code_1 dup key: { code: "LAP123" }
+[2024-08-10T18:14:22.976Z] error: Error inesperado en el servidor: E11000 duplicate key error collection: ecommerse.products index: code_1 dup key: { code: "HEAD567" }

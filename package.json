@@ -1,4 +1,10 @@
+
 {
+  "scripts": {
+    "start": "nodemon ./src/app.js",
+    "dev": "nodemon ./src/app.js",
+    "test": "mocha './test/**/*.js' --exit"
+  },
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
     "bcrypt": "^5.1.1",
