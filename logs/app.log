@@ -9,3 +9,4 @@
 [2024-08-10T18:14:22.976Z] error: Error inesperado en el servidor: E11000 duplicate key error collection: ecommerse.products index: code_1 dup key: { code: "HEAD567" }
 [2024-08-10T18:14:30.931Z] info: Producto agregado satisfactoriamente
 [2024-08-10T18:14:39.247Z] info: Producto agregado satisfactoriamente
+[2024-08-12T19:23:39.666Z] info: Producto agregado satisfactoriamente

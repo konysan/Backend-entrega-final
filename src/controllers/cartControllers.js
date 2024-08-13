@@ -1,12 +1,14 @@
 const CartMongoDAO = require('../dao/cartMongoDAO.js');
+const ProductMongoDAO = require("../dao/productMongoDAO.js")
 const Cart = require('../dao/models/cartModels.js');
 const { generateUniqueCode, calculateTotalAmount } = require('../utils/utils.js');
-const Product = require("../dao/models/productModels.js");
 const Ticket = require ("../dao/models/ticket.js")
 
+const productDAO = new ProductMongoDAO();
 const cartDAO = new CartMongoDAO();
 
 class CartController {
+
     static async createCart(req, res) {
         const initialProducts = req.body.products || [];
         console.log("Productos iniciales recibidos:", initialProducts);
@@ -22,23 +24,24 @@ class CartController {
     }
 
     static async getCartById(req, res) {
-        const cartId = req.params.cid;
+    const cartId = req.params.cid;
 
-        try {
-            const cart = await Cart.findById(cartId).populate({
-                path: "products.productId",
-                select: "title price description code category stock status",
-            });
+    try {
+        
+        const cart = await cartDAO.findCart({ _id: cartId }, {
+            path: "products.productId",
+            select: "title price description code category stock status",
+        });
 
-            if (!cart) {
-                return res.status(400).json({ error: "Carrito no encontrado" });
-            }
-
-            res.json(cart);
-        } catch (error) {
-            console.error("Error al obtener el carrito:", error);
-            res.status(500).json({ error: "Error del servidor: " + error.message });
+        if (!cart) {
+            return res.status(404).json({ error: "Carrito no encontrado" });
         }
+
+        res.json(cart);
+    } catch (error) {
+        console.error("Error al obtener el carrito:", error);
+        res.status(500).json({ error: "Error del servidor: " + error.message });
+    }
     }
 
     static async removeProductFromCart(req, res) {
@@ -73,31 +76,33 @@ class CartController {
     static async addOrUpdateProduct(req, res) {
         try {
             const { cid, pid } = req.params;
-    
-            const cart = await Cart.findById(cid);
-            const product = await Product.findById(pid);
-    
+        
+            const cart = await cartDAO.findCart({ _id: cid });
+            const product = await productDAO.getProductById(pid);
+        
             if (!cart || !product) {
                 return res.status(404).json({ message: 'Carrito o producto no encontrado' });
             }
+    
             const cartProduct = cart.products.find(p => p.productId.toString() === pid);
             if (cartProduct) {
                 cartProduct.quantity += 1;
             } else {
                 cart.products.push({ productId: pid, quantity: 1 });
             }
-            await cart.save();
     
-            product.stock -= 1;
-            await product.save();
+            await cartDAO.updateCart(cid, { products: cart.products });
     
+            await productDAO.updateProduct(pid, { stock: product.stock - 1 });
+        
             res.status(200).json(cart);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
-    } 
+    }
     
-    static async finalizePurchase (req, res) {
+    
+    static async finalizePurchase(req, res) {
         try {
             const { cid } = req.params; 
             const userId = req.session.usuario._doc._id; 
@@ -106,7 +111,7 @@ class CartController {
                 return res.status(400).json({ error: 'ID de usuario no disponible en la sesión' });
             }
     
-            const cart = await Cart.findById(cid).populate('products.productId');
+            const cart = await cartDAO.findCart({ _id: cid }, { path: 'products.productId' });
             if (!cart) {
                 return res.status(404).json({ error: 'Carrito no encontrado' });
             }
@@ -119,17 +124,14 @@ class CartController {
     
             const ticketCode = generateUniqueCode(); 
     
-            console.log('ID de usuario:', userId);
-    
             const ticket = new Ticket({
                 code: ticketCode,
                 amount: totalAmount,
                 purchaser: userId 
             });
-    
             await ticket.save();
     
-            await Cart.findByIdAndUpdate(cid, { products: [] });
+            await cartDAO.updateCart(cid, { products: [] });
     
             res.status(200).json({ message: 'Compra finalizada con éxito', ticket });
         } catch (error) {
@@ -137,6 +139,7 @@ class CartController {
             res.status(500).json({ error: 'Error interno del servidor' });
         }
     }
+    
 }
 
 module.exports = CartController;

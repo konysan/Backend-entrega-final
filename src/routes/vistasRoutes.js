@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
     res.status(200).render('home', { login: req.session.usuario });
 });
 
-router.get("/chat", auth(['user', 'admin']), (req, res) => {
+router.get("/chat", auth(['user', 'admin', 'premium']), (req, res) => {
     res.render("chat", { login: req.session.usuario });
 });
 
@@ -42,7 +42,7 @@ router.get('/productos', auth(['usuario', 'admin', 'premium']), async (req, res)
     }
 });
 
-router.get('/carrito', auth(['user', 'admin']), async (req, res) => {
+router.get('/carrito', auth(['usuario', 'admin']), async (req, res) => {
     try {
         const cartId = req.session.usuario._doc.cart;
         const carrito = await Cart.findById(cartId).populate('products.productId').exec();
@@ -65,7 +65,7 @@ router.get('/carrito', auth(['user', 'admin']), async (req, res) => {
 
 
 
-router.get('/perfil', auth(['user', 'admin']), async (req, res) => {
+router.get('/perfil', auth(['usuario', 'admin']), async (req, res) => {
     
     let usuario = req.userDTO;
     if (!usuario) {

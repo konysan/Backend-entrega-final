@@ -6,19 +6,19 @@ class CartMongoDAO {
         
     }
 
-    async create(){
+      async create(){
       return await Cart.create({products:[]})
       }
 
-    async findCart(filtro = {}, populateOptions = null) {
-    let query = Cart.findOne(filtro);
-    if (populateOptions) {
-        query = query.populate(populateOptions);
-    }
-    return await query.lean();
+      async findCart(filtro = {}, populateOptions = null) {
+        let query = Cart.findOne(filtro);
+        if (populateOptions) {
+            query = query.populate(populateOptions);
+        }
+        return await query.lean();
       }
-
-    async getCart() {
+    
+      async getCart() {
         try {
           return await Cart.find();
         } catch (error) {
@@ -79,35 +79,14 @@ class CartMongoDAO {
         }
       }
     
-      async updateStockProduct(cartId, productId, updateStock) {
+      async updateCart(cartId, update) {
         try {
-            const cart = await Cart.findById(cartId);
-    
-            if (!cart) {
-                throw new Error(`Carrito no encontrado para el ID ${cartId}`);
-            }
-    
-            const productToUpdate = cart.products.find((product) =>
-                product.productId.equals(productId)
-            );
-    
-            if (!productToUpdate) {
-                throw new Error(`Producto no encontrado en el carrito`);
-            }
-    
-            productToUpdate.stock = updateStock;
-    
-            await cart.save();
-    
-            return cart;
+            return await Cart.findByIdAndUpdate(cartId, update, { new: true }).lean();
         } catch (error) {
-            throw new Error(
-                "Error al actualizar la cantidad de stock del producto en el carrito: " +
-                error.message
-            );
+            throw new Error("Error al actualizar el carrito: " + error.message);
         }
       }
-    
+
     }
 
 module.exports = CartMongoDAO;

@@ -3,7 +3,7 @@ const router = express.Router();
 const CartController = require('../controllers/cartControllers.js');
 const auth = require('../middlewares/auth.js');
 
-router.post('/', auth('usuario'),CartController.createCart)
+router.post('/', auth(['usuario', 'admin', 'premium']),CartController.createCart)
 
 router.get('/:cid',auth(['usuario', 'admin', 'premium']), CartController.getCartById);
 
